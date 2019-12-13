@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <jmxConfigurator />
+    <property resource="application.properties"/>
+    <property resource="application-${spring.profiles.active}.properties"/>
+
+    <!--日志控制台输出设置-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.axlife.console.level}</level>
+        </filter>
+        <encoder>
+            <pattern>${logback.axlife.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="rollingLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${logback.axlife.file.level}</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logback.axlife.file.fileNamePattern}</fileNamePattern>
+            <MaxHistory>${logback.axlife.file.MaxHistory}</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logback.axlife.pattern}</pattern>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>${logback.axlife.file.MaxFileSize}</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+
+    <!--<appender name="AsyncrollingLogFile" class="ch.qos.logback.classic.AsyncAppender">-->
+    <!--&lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
+    <!--<discardingThreshold>0</discardingThreshold>-->
+    <!--&lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
+    <!--<queueSize>512</queueSize>-->
+    <!--<appender-ref ref="rollingLogFile"/>-->
+    <!--</appender>-->
+
+
+    <!-- root -->
+    <root level="${logback.axlife.rootlevel}" >
+        <appender-ref ref="console" />
+        <!--<appender-ref ref="AsyncrollingLogFile" />-->
+        <appender-ref ref="rollingLogFile" />
+    </root>
+
+
+
+
+</configuration>
